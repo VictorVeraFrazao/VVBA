@@ -19,7 +19,7 @@ c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Scope_Pr
 */
 
 map<string, vector<string>> return_scope(set<string> *inputCompounds, map<string, map<string, set<string>>> *rea);
-map<string, vector<string>> return_scope_REV(set<string> *inputCompounds, map<string, map<string, set<string>>> *rea);
+//map<string, vector<string>> return_scope_REV(set<string> *inputCompounds, map<string, map<string, set<string>>> *rea);
 
 map<string, vector<string>> return_scope(set<string> *inputCompounds, map<string, map<string, set<string>>> *rea)
 {
@@ -43,7 +43,7 @@ map<string, vector<string>> return_scope(set<string> *inputCompounds, map<string
 
     return all_scopes(&cmp);
 }
-
+/*
 map<string, vector<string>> return_scope_REV(set<string> *inputCompounds, map<string, map<string, set<string>>> *rea)
 {
     println("Reaction list will be optimized");
@@ -65,10 +65,10 @@ map<string, vector<string>> return_scope_REV(set<string> *inputCompounds, map<st
     println("There are " + std::to_string(compounds.size()) + " unique compunds in our reactions list");
 
     return all_scopes_REV(&cmp);
-}
+}*/
 
 PYBIND11_MODULE(Scope_Prog_PyWrap, m)
 {
     m.def("return_scope", &return_scope);
-    m.def("return_scope_REV", &return_scope_REV);
+ //   m.def("return_scope_REV", &return_scope_REV);
 }
