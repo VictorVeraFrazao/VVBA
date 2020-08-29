@@ -6,7 +6,7 @@ CURRENTLY WORK IN PROGRESS. CHECK [MASTER](https://github.com/VictorVeraFrazao/V
 
 ## Network Expansion Framework project for Python and C++ (CPPY Network Expansion Framework)
 ## 1. Release notes
-The CPPY Network Expansion Framework will be released alongside the MOPED (Metabolic Object-oriented Python Modelling Environment?). Current version: 0.1.0.
+The CPPY Network Expansion Framework will be released alongside the MOPED (Metabolic Object-oriented Python Modelling Environment?). Current version: 0.1.1.
 ## 2. Description
 This implementation of the Network Expansion Algorithm deals with the elapsed time issues on large-scale or global metabolic networks. Calculating every biosynthetical potential (scope) of every single compound or in combination with other ones (like cofactors) reveals largely increased runtimes over durations of hours, depending on the used hardware. Increased runtimes slow down analyzing and modelling processes and errors, i.e. due to erroneous presets of the analysis, are more devastating as repeating the analysis process is far more punishing and can be a heavy obstacle for the programmer's patience and motivation. As more performant hardware is not available at all times, a code that significantly reduces the elapsed time for large-scaled network analyses was successfully implemented. For this it was decided to transfer the main process to a C++ code instead of Python3, although the program is still accessible via Python3, so the resulting data is prepared for any subsequent analysis, as Python3, alongside with scientific data processing distributions like Anaconda, is far more feasible for easy data analysis than it is C++. However, the program is restricted in some functions and is not sufficiently handy for an alltime use without deeper instructions by the developer. Thus, we are currently working on modifying the code to hopefully include it in the [MOPED](https://pypi.org/project/moped/ "MOPED Homepage") module, developed by Nima Saadat and Marvin van Aalst. Furthermore we are aiming to extend the functionality and increase the performance.
 ## 3. Prerequisites
@@ -25,6 +25,9 @@ The flatfile parser is part of the MOPED module and it is not planned to publish
 Compiling was successfully executed on UNIX systems (Ubuntu 16.04).
 Compiler: GNU g++ 7.4.0
 The compiling might be accompanied by some warnings. These warnings come due to C++ version interferences but should not impact the compiling process.
+
+Since v0.1.1:
+GNU g++ compiling is now subprocessed and is not required to be executed manually. 
 ### 4.2 Program execution
 Main program accessible via [Python3 Script](https://github.com/VictorVeraFrazao/VVBA/blob/workspace/CPPY_Network_Expansion_Framework/CPPY_NetworkExpansion_framework.py) execution. Execution on iPython shell console is recommended. The usage of Python IDEs (e.g. Spyder) might reduce the program's performance.
 ### 4.3 Output
