@@ -7,14 +7,41 @@ Created on Thu Jan  9 14:41:36 2020
 """
 import Scope_Prog_PyWrap
 import copy
-# %%
-# Exemplary set:
-comp = {'met1', 'met2', 'met3', 'met4'}
+
+import sys
+import os
+
+
+# Compiler Function (ALPHA)
+def CBuild():
+	system = sys.platform
+	
+	# Linux compiler
+	if system == 'linux':
+		os.system('c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Scope_Prog_PyWrap.cpp -o Scope_Prog_PyWrap`python3-config --extension-suffix`')
+
+
+### FUTURE IMPLEMENTATION FOR OTHER SYSTEMS THAN LINUX; COMPILERS UNKNOWN OR NOT TESTED YET
+## WINDOWS:
+#	elif system == 'win32':
+#		os.system('(???)')
+## MacOS:
+#   elif system == 'darwin':
+#		os.system('c++ -O3 -Wall -shared -std=c++11 -undefined dynamic_lookup `python3 -m pybind11 --includes` Scope_Prog_PyWrap.cpp -o Scope_Prog_PyWrap`python3-config --extension-suffix`
+
+
+	else:
+		print("Compilation failed")
+		sys.exit()
+
+# Exemplary network data:
+comp = {'met1', 'met2', 'met3', 'met4'} #single compound seeds
 rea = {'rea1':{'met1':-1,'met2':1},
        'rea2':{'met2':-1,'met3':1},
        'rea3':{'met3':-1,'met4':1}
-       }
-# %%
+       } # stoichiometry
+
+# Modulation of network data; currently required to modulate input data for C++ bind
 def reaction_conversion(reactions):
     left = set()
     right = set()
@@ -33,8 +60,9 @@ def reaction_conversion(reactions):
         left.clear()
         right.clear()
     return rea_dict
-     
+
 red_rea = reaction_conversion(rea)
 
-# %%
-print(Scope_Prog_PyWrap.return_scope(comp, red_rea))
+# Program execution
+CBuild()
+print(Scope_Prog_PyWrap.return_scope(comp, red_rea)) #Output: single scopes for every input seed
