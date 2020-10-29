@@ -6,9 +6,11 @@
 
 namespace py = pybind11;
 
-std::map<std::string, std::set<std::string>> calc_scope(std::set<std::string> *sc_seed, std::map<std::string, std::map<std::string, std::set<std::string>>> *rea, bool reversible);
+using stoichio = std::map<std::string, strSet>;
 
-std::map<std::string, std::set<std::string>> calc_scope(std::set<std::string> *sc_seed, std::map<std::string, std::map<std::string, std::set<std::string>>> *rea, bool reversible)
+std::map<std::string, strSet> calc_scope(strSet *sc_seed, std::map<std::string, stoichio> *rea, bool reversible);
+
+std::map<std::string, strSet> calc_scope(strSet *sc_seed, std::map<std::string, stoichio> *rea, bool reversible)
 {
     reactions = std::vector<reaction_t>(rea->size());
     Rev = reversible;
@@ -22,7 +24,7 @@ std::map<std::string, std::set<std::string>> calc_scope(std::set<std::string> *s
             .right = ToPointerVector(&it.second["right"])};
     }
 
-    std::vector<std::string *> cmp = ToPointerVector(sc_seed);
+    pstrVec cmp = ToPointerVector(sc_seed);
     return _scope(cmp);
 }
 

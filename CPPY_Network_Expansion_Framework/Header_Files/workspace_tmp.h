@@ -7,20 +7,26 @@
 #include <vector>
 #include <map>
 
+//ALIASES, TEMPLATES, STRUCTURES
+using strSet = std::set<std::string>;
+using pstrSet = std::set<std::string*>;
+using strVec = std::vector<std::string>;
+using pstrVec = std::vector<std::string*>;
+
 std::string water = "WATER";            //String var for inclusion of water into the seed
 std::string *w_ptr;
 
 struct compound_scope
 {
-    std::set<std::string> comps;
-    std::set<std::string> reacs;
+    strSet comps;
+    strSet reacs;
 };
 
 struct reaction_t                       //structure for reaction
 {
     std::string rname;                  //reaction name
-    std::vector<std::string *> left;    //reaction substrate vector
-    std::vector<std::string *> right;   //reaction product vector
+    pstrVec left;    //reaction substrate vector
+    pstrVec right;   //reaction product vector
 };
 
 std::vector<reaction_t> reactions;      //list of network reactions
@@ -28,19 +34,19 @@ std::map<std::string, std::string> compounds;
 bool Rev;
 
 //---PROTOTYPES---
-std::map<std::string, std::set<std::string>> _scope(std::vector<std::string *> seed); //Network Expansion Algorithm
-bool IsInSet(std::vector<std::string *> *needles, std::set<std::string *> *haystack); 
-std::vector<std::string *> ToPointerVector(std::set<std::string> *input);
-std::set<std::string> deRefSet(std::set<std::string *> *strings);
-std::set<std::string *> convertToSet(std::vector<std::string *> v);
+std::map<std::string, strSet> _scope(pstrVec seed); //Network Expansion Algorithm
+bool IsInSet(pstrVec *needles, pstrSet *haystack); 
+pstrVec ToPointerVector(strSet *input);
+strSet deRefSet(pstrSet *strings);
+pstrSet convertToSet(pstrVec v);
 
 //---FUNCTION CODES---
-std::map<std::string, std::set<std::string>> _scope(std::vector<std::string *> seed)
+std::map<std::string, strSet> _scope(pstrVec seed)
 {
-    std::map<std::string, std::set<std::string>> sc_map;
-    std::set<std::string *> reas;
+    std::map<std::string, strSet> sc_map;
+    strSet reas;
 
-    std::set<std::string *> cmps = convertToSet(seed);
+    pstrSet cmps = convertToSet(seed);
     unsigned int a = 0, b = 1;
     w_ptr = &water;
     cmps.insert(w_ptr);  //including water
@@ -51,28 +57,28 @@ std::map<std::string, std::set<std::string>> _scope(std::vector<std::string *> s
         {
             if (IsInSet(&reaction.left, &cmps))
             {
-                std::vector<std::string *> *right = &reaction.right;
+                pstrVec *right = &reaction.right;
                 cmps.insert(right->begin(), right->end());
-                reas.insert(&reaction.rname);
+                reas.insert(reaction.rname);
             }
 
             if(Rev == true && IsInSet(&reaction.right, &cmps))
             {
-                std::vector<std::string *> *left = &reaction.left;
+                pstrVec *left = &reaction.left;
                 cmps.insert(left->begin(), left->end());
-                reas.insert(&reaction.rname);
+                reas.insert(reaction.rname);
             }
         }
         a = cmps.size();
     }
 
     
-    sc_map.insert({"reactions", deRefSet(&reas)});
+    sc_map.insert({"reactions", reas});
     sc_map.insert({"compounds", deRefSet(&cmps)});
     return sc_map;
 }
 
-bool IsInSet(std::vector<std::string *> *needles, std::set<std::string *> *haystack)
+bool IsInSet(pstrVec *needles, pstrSet *haystack)
 {
 /*
 Searching the "needles" in the "haystack".
@@ -95,9 +101,9 @@ Out: TRUE if every needle element is in haystack, FALSE if otherwise
     return true;
 }
 
-std::vector<std::string *> ToPointerVector(std::set<std::string> *input)
+pstrVec ToPointerVector(strSet *input)
 {
-	std::vector<std::string *> result(input->size());
+	pstrVec result(input->size());
 
 	unsigned short i = 0;
 	for (auto c : *input)
@@ -113,9 +119,9 @@ std::vector<std::string *> ToPointerVector(std::set<std::string> *input)
 	return result;
 }
 
-std::set<std::string> deRefSet(std::set<std::string *> *strings)
+strSet deRefSet(pstrSet *strings)
 {
-	std::set<std::string> result;
+	strSet result;
 
 	for (std::string *s : *strings)
 	{
@@ -125,10 +131,10 @@ std::set<std::string> deRefSet(std::set<std::string *> *strings)
 	return result;
 }
 
-std::set<std::string *> convertToSet(std::vector<std::string *> v) 
+pstrSet convertToSet(pstrVec v) 
 { 
     // Declaring the  set 
-    std::set<std::string *> s; 
+    pstrSet s; 
   
     // Traverse the Vector 
     for (std::string * x : v) { 
@@ -140,5 +146,6 @@ std::set<std::string *> convertToSet(std::vector<std::string *> v)
   
     // Return the resultant Set 
     return s; 
-} 
+}
+
 #endif //WS_TMP_H
